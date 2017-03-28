@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import morph.engine.board.Move;
@@ -16,8 +17,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
-import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
@@ -25,6 +24,9 @@ import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
+import java.awt.Color;
+import java.awt.Dimension;
+import javax.swing.JScrollBar;
 
 public class MorphFrame extends JFrame {
 
@@ -37,8 +39,8 @@ public class MorphFrame extends JFrame {
 	private JTable printBoardTable;
 	private JTable tableLabel;
 	private JTable table;
-	private JTextArea txtrMovelist;
-	private DefaultListModel<String> model;
+	private DefaultListModel<String> modelListLegalMoves;
+	private DefaultListModel<String> modelListMoveHistory;
 	private static Game game;
 	private static boolean gameStart;
 	private ArrayList<String> legalMoves;
@@ -167,30 +169,43 @@ public class MorphFrame extends JFrame {
 		btnMove.setBounds(485, 531, 89, 23);
 		contentPane.add(btnMove);
 		
-		txtrMovelist = new JTextArea();
-		txtrMovelist.setLineWrap(true);
-		txtrMovelist.setFont(new Font("Monospaced", Font.PLAIN, 13));
-		txtrMovelist.setText("MoveList");
-		txtrMovelist.setBounds(10, 384, 399, 170);
-		contentPane.add(txtrMovelist);
-		
 		JLabel lblMoveList = new JLabel("Move List");
-		lblMoveList.setBounds(10, 359, 71, 14);
+		lblMoveList.setBounds(422, 11, 71, 14);
 		contentPane.add(lblMoveList);
 		
 		
 		
 		
-		model = new DefaultListModel<String>();
-		JList<String> list = new JList<String>(model);
-		list.addListSelectionListener(new ListSelectionListener() {
+		modelListLegalMoves = new DefaultListModel<String>();
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(422, 33, 152, 454);
+		contentPane.add(scrollPane);
+		JList<String> listLegalMove = new JList<String>(modelListLegalMoves);
+		scrollPane.setViewportView(listLegalMove);
+		listLegalMove.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
-				moveInput.setText(list.getSelectedValue());
+				moveInput.setText(listLegalMove.getSelectedValue());
 			}
 		});
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setBounds(422, 10, 152, 477);
-		contentPane.add(list);
+		listLegalMove.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		modelListMoveHistory = new DefaultListModel<String>();
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(260, 33, 123, 454);
+		contentPane.add(scrollPane_1);
+		JList listMoveHistory = new JList(modelListMoveHistory);
+		scrollPane_1.setViewportView(listMoveHistory);
+		JScrollPane scrollListMoveHistory = new JScrollPane();
+		//scrollListMoveHistory.setViewportView(listMoveHistory);
+		
+	    JScrollPane scrollListLegalMoves = new JScrollPane();
+	    //scrollListLegalMoves.setViewportView(listLegalMove);
+	    
+		JLabel lblMoveHistory = new JLabel("Move History");
+		lblMoveHistory.setBounds(260, 11, 71, 14);
+		contentPane.add(lblMoveHistory);
 		
 		
 		
@@ -216,6 +231,7 @@ public class MorphFrame extends JFrame {
 			if(transition.getMoveStatus().isDone()){
 				game.setBoard(transition.getToBoard());
 			}
+			modelListMoveHistory.add(0, input);
 			update();
 		} else if(!input.matches("[A-F][1-8][A-F][1-8]")){
 			JOptionPane.showMessageDialog(null,
@@ -255,10 +271,10 @@ public class MorphFrame extends JFrame {
 		}
 		
 		//updates movelist
-		txtrMovelist.setText(legalMoves.toString());
-		model.clear();
+		//txtrMovelist.setText(legalMoves.toString());
+		modelListLegalMoves.clear();
 		for(final String move : legalMoves){
-			model.addElement(move);
+			modelListLegalMoves.addElement(move);
 		}
 		
 	}
