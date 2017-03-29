@@ -99,12 +99,7 @@ public class Board {
 		ArrayList<String> printableLegalMoves = new ArrayList<>();
 		
 		for(final Move move : player.getLegalMoves()){
-			StringBuilder legalMove = new StringBuilder("    ");
-			legalMove.setCharAt(0, (char) ((move.getCurrentCoord() % 6) + 'A'));
-			legalMove.setCharAt(1, (char) (7 - ((move.getCurrentCoord() / 6)) + '1'));
-			legalMove.setCharAt(2, (char) ((move.getDestinationCoordinate() % 6) + 'A'));
-			legalMove.setCharAt(3, (char) (7 - ((move.getDestinationCoordinate() / 6)) + '1'));
-			printableLegalMoves.add(legalMove.toString());
+			printableLegalMoves.add(move.toString());
 		}
 		
 		return printableLegalMoves;

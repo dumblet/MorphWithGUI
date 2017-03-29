@@ -7,9 +7,11 @@ import morph.engine.player.MoveTransition;
 public class MiniMax implements MoveStrategy{
 	
 	private final BoardEval boardEval;
+	private final int searchDepth;
 	
-	public MiniMax(){
-		this.boardEval = null;
+	public MiniMax(final int searchDepth){
+		this.boardEval = new StandardBoardEvaluator();
+		this.searchDepth = searchDepth;
 	}
 
 	@Override
@@ -18,7 +20,7 @@ public class MiniMax implements MoveStrategy{
 	}
 	
 	@Override
-	public Move execute(Board board, int depth) {
+	public Move execute(Board board) {
 		
 		final long startTime = System.currentTimeMillis();
 		
@@ -28,7 +30,7 @@ public class MiniMax implements MoveStrategy{
 		int lowestSeenVal = Integer.MAX_VALUE;
 		int curVal;
 		
-		System.out.println(board.currentPlayer() + " Thinking with depth = " + depth);
+		System.out.println(board.currentPlayer() + " Thinking with depth = " + searchDepth);
 		
 		int numMoves = board.currentPlayer().getLegalMoves().size();
 		
@@ -37,8 +39,10 @@ public class MiniMax implements MoveStrategy{
 			final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
 			if(moveTransition.getMoveStatus().isDone()){
 				curVal = board.currentPlayer().getSide().isCPU() ?
-						max(moveTransition.getToBoard(), depth - 1) : 
-						min(moveTransition.getToBoard(), depth - 1);
+						max(moveTransition.getToBoard(), searchDepth - 1) : 
+						min(moveTransition.getToBoard(), searchDepth - 1);
+
+						System.out.println(curVal + " " + move);
 				if(board.currentPlayer().getSide().isCPU() && curVal <= lowestSeenVal){
 					lowestSeenVal = curVal;
 					bestMove = move;
@@ -52,7 +56,8 @@ public class MiniMax implements MoveStrategy{
 		}
 		
 		final long executionTime = System.currentTimeMillis() - startTime;
-		
+
+		System.out.println(bestMove);
 		return bestMove;
 	}
 	
@@ -60,7 +65,7 @@ public class MiniMax implements MoveStrategy{
 	//helper methods
 	
 	public int min(final Board board, final int depth){
-		if(depth == 0 /* or game over*/){
+		if(depth == 0 || isEndGameScenario(board)){
 			return this.boardEval.evaluate(board, depth);
 		}
 		
@@ -77,8 +82,14 @@ public class MiniMax implements MoveStrategy{
 		return lowestSeenVal;
 	}
 	
+	private boolean isEndGameScenario(Board board) {
+		// TODO Auto-generated method stub
+		return !(board.currentPlayer().isKingAlive()) ||
+				board.currentPlayer().isStalemate();
+	}
+
 	public int max(final Board board, final int depth){
-		if(depth == 0 /* or game over*/){
+		if(depth == 0 || isEndGameScenario(board)){
 			return this.boardEval.evaluate(board, depth);
 		}
 		

@@ -32,11 +32,14 @@ public class Rook extends Piece{
 			while(BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate) && 
 					BoardUtils.noMoveError(candidateDestinationCoordinate, (candidateCoordinateOffset * this.getPieceSide().getDirection()))){
 				
-				candidateDestinationCoordinate += (candidateCoordinateOffset * this.getPieceSide().getDirection());
+				
+					candidateDestinationCoordinate += (candidateCoordinateOffset * this.getPieceSide().getDirection());
+				
 				
 				if(BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)){		
 
 					final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
+
 
 					if(candidateDestinationTile.isTileOccupied()){
 
@@ -49,11 +52,9 @@ public class Rook extends Piece{
 						}
 
 						break;
-					} else if(!candidateDestinationTile.isTileOccupied() && candidateCoordinateOffset < 0){
+					} else if(!candidateDestinationTile.isTileOccupied() && candidateCoordinateOffset < 2){
 						legalMoves.add(new Move.PeacefulMove(board, this, candidateDestinationCoordinate));
-					} else if(!candidateDestinationTile.isTileOccupied() && candidateCoordinateOffset > 0){
-						continue;
-					}
+					} 
 				}
 			}
 		}

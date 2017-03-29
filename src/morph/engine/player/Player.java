@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import morph.engine.Side;
 import morph.engine.board.Board;
 import morph.engine.board.Move;
@@ -53,16 +55,11 @@ public abstract class Player {
 				return (King) piece;
 			}
 		}
-		throw new RuntimeException("GAME END"); //GAME END
+		return null;
 	}
 	
 	public boolean isMoveLegal(final Move move){
 		return this.legalMoves.contains(move);
-	}
-	
-	public boolean isGameOverLose(){
-		//TODO game over
-		return false;
 	}
 	
 	//ALSO A LOSE
@@ -89,13 +86,6 @@ public abstract class Player {
 		
 		final Board transitionBoard = move.execute();
 		
-		/*final Collection<Move> kingAttacks = Player.calculateAttacksOnTile(transitionBoard.currentPlayer().getOpponent().getPlayerKing().getPiecePosition(),
-				transitionBoard.currentPlayer().getLegalMoves());
-		
-		if(!kingAttacks.isEmpty()) {
-			return new MoveTransition(this.board, this.board, move, MoveStatus.EXPOSING_KING_TO_ATTACK);
-		}
-		*/
 		return new MoveTransition(this.board, transitionBoard, move, MoveStatus.DONE);
 	}
 
@@ -103,5 +93,9 @@ public abstract class Player {
 	public abstract Collection<Piece> getActivePieces();
 	public abstract Side getSide();
 	public abstract Player getOpponent();
+
+	public boolean isKingAlive() {
+		return !(playerKing == null);
+	}
 
 }

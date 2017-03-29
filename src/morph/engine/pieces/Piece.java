@@ -62,31 +62,31 @@ public abstract class Piece {
 	
 	public enum PieceType {
 		
-		PAWN("P") {
+		PAWN(5,"P") {
 			@Override
 			public boolean isKing() {
 				return false;
 			}
 		},
-		KNIGHT("N") {
+		KNIGHT(25,"N") {
 			@Override
 			public boolean isKing() {
 				return false;
 			}
 		},
-		BISHOP("B") {
+		BISHOP(25,"B") {
 			@Override
 			public boolean isKing() {
 				return false;
 			}
 		},
-		ROOK("R") {
+		ROOK(25,"R") {
 			@Override
 			public boolean isKing() {
 				return false;
 			}
 		},
-		KING("K") {
+		KING(10000,"K") {
 			@Override
 			public boolean isKing() {
 				return true;
@@ -96,8 +96,10 @@ public abstract class Piece {
 		
 		
 		private String pieceName;
+		private int pieceValue;
 			
-		PieceType(final String pieceName) {
+		PieceType(final int pieceValue, final String pieceName) {
+			this.pieceValue = pieceValue;
 			this.pieceName = pieceName;
 		}
 		
@@ -107,6 +109,14 @@ public abstract class Piece {
 		}
 		
 		public abstract boolean isKing();
+
+		public int getPieceValue() {
+			return pieceValue;
+		}
+	}
+
+	public int getPieceValue() {
+		return this.pieceType.getPieceValue();
 	}
 	
 }

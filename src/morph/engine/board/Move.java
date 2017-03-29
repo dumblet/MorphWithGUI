@@ -45,6 +45,15 @@ public abstract class Move {
 		
 	}
 	
+	public String toString(){
+		StringBuilder legalMove = new StringBuilder("    ");
+		legalMove.setCharAt(0, (char) ((this.getCurrentCoord() % 6) + 'A'));
+		legalMove.setCharAt(1, (char) (7 - ((this.getCurrentCoord() / 6)) + '1'));
+		legalMove.setCharAt(2, (char) ((this.getDestinationCoordinate() % 6) + 'A'));
+		legalMove.setCharAt(3, (char) (7 - ((this.getDestinationCoordinate() / 6)) + '1'));
+		return legalMove.toString();
+	}
+	
 	public boolean isAttack(){
 		return false;
 	}

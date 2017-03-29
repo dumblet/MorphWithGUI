@@ -29,7 +29,7 @@ public class Pawn extends Piece{
 
 			int candidateDestinationCoordinate = this.piecePosition + (candidateCoordinateOffset * this.getPieceSide().getDirection() *-1);
 
-			if(BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate) && BoardUtils.noMoveError(candidateDestinationCoordinate, candidateCoordinateOffset)){		
+			if(BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate) && BoardUtils.noMoveError(this.piecePosition, candidateCoordinateOffset)){		
 
 				final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
 
