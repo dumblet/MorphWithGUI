@@ -8,11 +8,21 @@ public class MiniMax implements MoveStrategy{
 	
 	private final BoardEval boardEval;
 	private final int searchDepth;
+	private long executionTime;
 	
 	public MiniMax(final int searchDepth){
 		this.boardEval = new StandardBoardEvaluator();
 		this.searchDepth = searchDepth;
 	}
+
+	/**
+	 * @return the executionTime
+	 */
+	@Override
+	public Long getExecutionTime() {
+		return executionTime;
+	}
+
 
 	@Override
 	public String toString(){
@@ -57,7 +67,9 @@ public class MiniMax implements MoveStrategy{
 		
 		final long executionTime = System.currentTimeMillis() - startTime;
 
-		System.out.println(bestMove);
+		this.executionTime = executionTime;
+		
+		System.out.println(bestMove.toString());
 		return bestMove;
 	}
 	

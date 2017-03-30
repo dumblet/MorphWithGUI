@@ -17,11 +17,11 @@ public abstract class Player {
 	
 	protected final Board board;
 	protected final King playerKing;
-	protected final Collection<Move> legalMoves;
+	protected final List<Move> legalMoves;
 	protected final Collection<Move> opponentMoves;
 	
 	Player(final Board board,
-			final Collection<Move> legalMoves,
+			final List<Move> legalMoves,
 			final Collection<Move> opponentMoves){
 		
 		this.board = board;
@@ -34,11 +34,11 @@ public abstract class Player {
 		return playerKing;
 	}
 	
-	public Collection<Move> getLegalMoves(){
+	public List<Move> getLegalMoves(){
 		return legalMoves;
 	}
 	
-	private static Collection<Move> calculateAttacksOnTile(int piecePosition, Collection<Move> moves){
+	private static List<Move> calculateAttacksOnTile(int piecePosition, List<Move> moves){
 		final List<Move> attackMoves = new ArrayList<>();
 		for(final Move move : moves) {
 			if(piecePosition == move.getDestinationCoordinate()){

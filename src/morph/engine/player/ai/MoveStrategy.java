@@ -6,4 +6,6 @@ import morph.engine.board.Move;
 public interface MoveStrategy {
 
 	Move execute(Board board);
+
+	Long getExecutionTime();
 }

@@ -1,6 +1,7 @@
 package morph;
 
 import java.awt.EventQueue;
+import java.awt.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import morph.engine.board.Move;
 import morph.engine.player.MoveTransition;
+import morph.engine.player.ai.AlphaBetaWithMoveOrdering;
 import morph.engine.player.ai.MiniMax;
 import morph.engine.player.ai.MoveStrategy;
 
@@ -48,6 +50,7 @@ public class MorphFrame extends JFrame {
 	private static Game game;
 	private static boolean gameStart;
 	private static MorphFrame morphFrame = new MorphFrame();
+	private static ArrayList<Long> executionTimeList = new ArrayList<>();
 
 	/**
 	 * Launch the application.
@@ -286,6 +289,7 @@ public class MorphFrame extends JFrame {
 			} else if(game.getBoard().currentPlayer().getSide().toString() == "HUMAN"){
 				JOptionPane.showMessageDialog(null, "CPU won", "Game End", JOptionPane.INFORMATION_MESSAGE);
 			}
+			System.out.println(calculateAverage(executionTimeList));
 			return;
 		}
 		modelListLegalMoves.clear();
@@ -300,6 +304,17 @@ public class MorphFrame extends JFrame {
 		//}
 
 	}
+	
+	private double calculateAverage(ArrayList <Long> marks) {
+		  Long sum = (long) 0;
+		  if(!marks.isEmpty()) {
+		    for (Long mark : marks) {
+		        sum += mark;
+		    }
+		    return sum.doubleValue() / marks.size();
+		  }
+		  return sum;
+		}
 
 	private static class AIThinkTank extends SwingWorker<Move, String>{
 
@@ -309,16 +324,16 @@ public class MorphFrame extends JFrame {
 
 		@Override
 		protected Move doInBackground() throws Exception {
-			final MoveStrategy miniMax = new MiniMax(5);
-
+			final MoveStrategy miniMax = new AlphaBetaWithMoveOrdering(6);
 			final Move bestMove = miniMax.execute(game.getBoard());
-
+			executionTimeList.add(( miniMax).getExecutionTime());
 			return bestMove;
 		}
 
 		@Override
 		public void done(){
 			try{
+				
 				final Move bestMove = get();
 				morphFrame.doComputerMove(bestMove);
 			}catch(InterruptedException e){

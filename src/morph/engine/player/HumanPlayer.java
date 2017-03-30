@@ -1,6 +1,7 @@
 package morph.engine.player;
 
 import java.util.Collection;
+import java.util.List;
 
 import morph.engine.Side;
 import morph.engine.board.Board;
@@ -9,7 +10,7 @@ import morph.engine.pieces.Piece;
 
 public class HumanPlayer extends Player {
 
-	public HumanPlayer(Board board, Collection<Move> legalMoves, final Collection<Move> opponentMoves) {
+	public HumanPlayer(Board board, List<Move> legalMoves, final Collection<Move> opponentMoves) {
 		super(board, legalMoves, opponentMoves);
 		// TODO Auto-generated constructor stub
 	}

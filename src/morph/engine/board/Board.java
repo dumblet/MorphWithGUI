@@ -37,8 +37,8 @@ public class Board {
 		this.humanPieces = calculateActivePieces(this.gameBoard, Side.HUMAN);
 		this.cpuPieces = calculateActivePieces(this.gameBoard, Side.CPU);
 		
-		final Collection<Move> humanStandardLegalMoves = calculateLegalMoves(this.humanPieces);
-		final Collection<Move> cpuStandardLegalMoves = calculateLegalMoves(this.cpuPieces); 
+		final List<Move> humanStandardLegalMoves = calculateLegalMoves(this.humanPieces);
+		final List<Move> cpuStandardLegalMoves = calculateLegalMoves(this.cpuPieces); 
 		
 		this.humanPlayer = new HumanPlayer(this, humanStandardLegalMoves, cpuStandardLegalMoves);
 		this.cpuPlayer = new CPUPlayer(this, cpuStandardLegalMoves, humanStandardLegalMoves);
@@ -83,7 +83,7 @@ public class Board {
 		return this.cpuPieces;
 	}
 
-	private Collection<Move> calculateLegalMoves(final Collection<Piece> pieces) {
+	private List<Move> calculateLegalMoves(final Collection<Piece> pieces) {
 		
 		final List<Move> legalMoves = new ArrayList<>();
 		
