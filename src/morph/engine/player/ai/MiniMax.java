@@ -42,7 +42,7 @@ public class MiniMax implements MoveStrategy{
 		
 		System.out.println(board.currentPlayer() + " Thinking with depth = " + searchDepth);
 		
-		int numMoves = board.currentPlayer().getLegalMoves().size();
+		//int numMoves = board.currentPlayer().getLegalMoves().size();
 		
 		for(final Move move : board.currentPlayer().getLegalMoves()){
 			

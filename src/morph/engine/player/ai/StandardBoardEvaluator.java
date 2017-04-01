@@ -16,16 +16,7 @@ public final class StandardBoardEvaluator implements BoardEval {
 
 	private int scorePlayer(Board board, Player player, int depth) {
 		// TODO Auto-generated method stub
-		return pieceVal(player) + mobility(player); //+ killEnemyKing(player, depth);
-	}
-
-	private static int killEnemyKing(Player player, int depth) {
-		return !(player.getOpponent().isKingAlive()) ? I_WIN_BONUS * depthBonus(depth) : 0;
-	}
-
-	private static int depthBonus(int depth) {
-		// TODO Auto-generated method stub
-		return depth == 0 ? 1 : DEPTH_BONUS * depth;
+		return pieceVal(player);
 	}
 
 	private static int mobility(Player player) {
@@ -34,8 +25,14 @@ public final class StandardBoardEvaluator implements BoardEval {
 
 	private static int pieceVal(Player player) {
 		int pieceValueScore = 0;
-		for(final Piece piece : player.getActivePieces()){
-			pieceValueScore += piece.getPieceValue();
+		if(player.getSide().isHuman()){
+			for(final Piece piece : player.getActivePieces()){
+				pieceValueScore += piece.getPieceValue();
+			}
+		} else {
+			for(final Piece piece : player.getActivePieces()){
+				pieceValueScore += piece.getPieceValue2();
+			}
 		}
 		return pieceValueScore;
 	}

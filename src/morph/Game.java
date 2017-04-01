@@ -12,7 +12,7 @@ public class Game {
 		
 		boolean cpuFirst;
 		
-		Object[] options = {"CPU", "Human"};
+		Object[] options = {"Dumblet", "Player"};
 		int input = JOptionPane.showOptionDialog(null, "Who moves first?", "First Move", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
 		if(input == JOptionPane.OK_OPTION)

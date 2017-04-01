@@ -62,31 +62,31 @@ public abstract class Piece {
 	
 	public enum PieceType {
 		
-		PAWN(5,"P") {
+		PAWN(5,"P", 1) {
 			@Override
 			public boolean isKing() {
 				return false;
 			}
 		},
-		KNIGHT(25,"N") {
+		KNIGHT(25,"N" , 3) {
 			@Override
 			public boolean isKing() {
 				return false;
 			}
 		},
-		BISHOP(25,"B") {
+		BISHOP(25,"B" , 3) {
 			@Override
 			public boolean isKing() {
 				return false;
 			}
 		},
-		ROOK(25,"R") {
+		ROOK(25,"R", 5) {
 			@Override
 			public boolean isKing() {
 				return false;
 			}
 		},
-		KING(10000,"K") {
+		KING(10000,"K",10000) {
 			@Override
 			public boolean isKing() {
 				return true;
@@ -97,9 +97,11 @@ public abstract class Piece {
 		
 		private String pieceName;
 		private int pieceValue;
+		private int pieceValue2;
 			
-		PieceType(final int pieceValue, final String pieceName) {
+		PieceType(final int pieceValue, final String pieceName, final int pieceValue2) {
 			this.pieceValue = pieceValue;
+			this.pieceValue2 = pieceValue2;
 			this.pieceName = pieceName;
 		}
 		
@@ -113,10 +115,19 @@ public abstract class Piece {
 		public int getPieceValue() {
 			return pieceValue;
 		}
+
+		public int getPieceValue2() {
+			// TODO Auto-generated method stub
+			return pieceValue2;
+		}
 	}
 
 	public int getPieceValue() {
 		return this.pieceType.getPieceValue();
+	}
+	
+	public int getPieceValue2(){
+		return this.pieceType.getPieceValue2();
 	}
 	
 }

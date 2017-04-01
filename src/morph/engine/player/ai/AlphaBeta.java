@@ -10,7 +10,8 @@ import morph.engine.board.Move;
 import morph.engine.player.MoveTransition;
 import morph.engine.player.Player;
 
-public class AlphaBetaWithMoveOrdering implements MoveStrategy {
+
+public class AlphaBeta implements MoveStrategy {
 
 
 
@@ -22,14 +23,17 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 	private final BoardEval evaluator;
 	private long executionTime;
 	private int cutOffsProduced;
+	private int depth;
 	private int boardsEvaluated;
 	private long startTime;
 	private long timer;
+	private int movesSorted;
 
 
 
-	public AlphaBetaWithMoveOrdering(final int depth) {
+	public AlphaBeta(final int depth) {
 		this.evaluator = new StandardBoardEvaluator();
+		this.depth = depth;
 		this.cutOffsProduced = 0;
 	}
 
@@ -52,10 +56,10 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 		List<Move> moveList = new ArrayList<Move>(board.currentPlayer().getLegalMoves());
 		moveList.sort(Comparator.comparing(Move::isAttack));
 		
-		Move previousBestMove = Move.NULL_MOVE;
-		int currentDepth = 1;
+		//Move previousBestMove = Move.NULL_MOVE;
+		int currentDepth = depth;
 		timer = System.currentTimeMillis() - startTime;
-		while(timer < 5000){
+		//while(timer < 5000){
 			Move bestMove = Move.NULL_MOVE;
 			int highestSeenValue = Integer.MIN_VALUE;
 			int lowestSeenValue = Integer.MAX_VALUE;
@@ -85,41 +89,39 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 							}
 				} 
 			}
-			currentDepth++;
+			//currentDepth++;
 			timer = System.currentTimeMillis() - startTime;
 			if(timer < 5000){
-				previousBestMove = bestMove;
+				//previousBestMove = bestMove;
 			}
-		}
+		//}
 		this.executionTime = System.currentTimeMillis() - startTime;
 		System.out.println(cutOffsProduced + "  cut offs");
 		System.out.println(boardsEvaluated + " boards evaluated");
 		System.out.println(executionTime + " execution time");
-		System.out.println("CHOSEN MOVE IS " + previousBestMove);
-		return previousBestMove;
+		System.out.println(movesSorted + " moves sorted");
+		System.out.println("CHOSEN MOVE IS " + bestMove);
+		return bestMove;
 	}
 
 	public int max(final Board board,
 			final int depth,
 			final int highest,
 			final int lowest) {
-		if (depth == 0) {
+		if (depth == 0 || isEndGameScenario(board)) {
 			this.boardsEvaluated++;
 			return this.evaluator.evaluate(board, depth);
 		}
-		if(isEndGameScenario(board)){
-			this.boardsEvaluated++;
-			return this.evaluator.evaluate(board, depth) + depth;
-		}
 
-		timer = System.currentTimeMillis() - startTime;
-		if(timer > 5000){
-			return Integer.MIN_VALUE;
-		}
+//		timer = System.currentTimeMillis() - startTime;
+//		if(timer > 5000){
+//			return Integer.MIN_VALUE;
+//		}
 		List<Move> moveList = new ArrayList<Move>(board.currentPlayer().getLegalMoves());
-		if(depth>1){
-			moveList.sort(Comparator.comparing(Move::isAttack));
-		}
+//		if(depth>5){
+//			moveList.sort(Comparator.comparing(Move::isAttack));
+//			movesSorted++;
+//		}
 		int currentHighest = highest;
 		for (final Move move : moveList) {
 			final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
@@ -138,23 +140,20 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 			final int depth,
 			final int highest,
 			final int lowest) {
-		if (depth == 0) {
+		if (depth == 0 || isEndGameScenario(board)) {
 			this.boardsEvaluated++;
 			return this.evaluator.evaluate(board, depth);
 		}
-		if(isEndGameScenario(board)){
-			this.boardsEvaluated++;
-			return this.evaluator.evaluate(board, depth) - depth;
-		}
 
-		timer = System.currentTimeMillis() - startTime;
-		if(timer > 5000){
-			return Integer.MAX_VALUE;
-		}
+//		timer = System.currentTimeMillis() - startTime;
+//		if(timer > 5000){
+//			return Integer.MAX_VALUE;
+//		}
 		List<Move> moveList = new ArrayList<Move>(board.currentPlayer().getLegalMoves());
-		if(depth>1){
-			moveList.sort(Comparator.comparing(Move::isAttack));
-		}
+//		if(depth>5){
+//			moveList.sort(Comparator.comparing(Move::isAttack));
+//			movesSorted++;
+//		}
 		int currentLowest = lowest;
 		for (final Move move : moveList) {
 			final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
@@ -167,6 +166,11 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 			}
 		}
 		return currentLowest;
+	}
+	
+	public List<Move> moveSort(){
+		return null;
+		
 	}
 
 

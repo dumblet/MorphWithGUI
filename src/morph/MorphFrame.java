@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import morph.engine.board.Move;
 import morph.engine.player.MoveTransition;
+import morph.engine.player.ai.AlphaBeta;
 import morph.engine.player.ai.AlphaBetaWithMoveOrdering;
 import morph.engine.player.ai.MiniMax;
 import morph.engine.player.ai.MoveStrategy;
@@ -45,13 +46,14 @@ public class MorphFrame extends JFrame {
 	private JTable printBoardTable;
 	private JTable tableLabel;
 	private JTable table;
+	private JLabel lblStatus;
+	private JLabel lblTranslatedMove;
 	private DefaultListModel<String> modelListLegalMoves;
 	private DefaultListModel<String> modelListMoveHistory;
 	private static Game game;
 	private static boolean gameStart;
 	private static MorphFrame morphFrame = new MorphFrame();
 	private static ArrayList<Long> executionTimeList = new ArrayList<>();
-
 	/**
 	 * Launch the application.
 	 */
@@ -86,6 +88,7 @@ public class MorphFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		this.setTitle("Dumblet");
 
 		moveInput = new JTextField();
 		moveInput.setBounds(485, 498, 89, 22);
@@ -172,6 +175,7 @@ public class MorphFrame extends JFrame {
 		btnMove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				doMove(moveInput.getText().toUpperCase());
+				moveInput.setText("");
 			}
 		});
 		btnMove.setBounds(485, 531, 89, 23);
@@ -214,11 +218,19 @@ public class MorphFrame extends JFrame {
 		JLabel lblMoveHistory = new JLabel("Move History");
 		lblMoveHistory.setBounds(260, 11, 71, 14);
 		contentPane.add(lblMoveHistory);
+		
+		lblStatus = new JLabel("AI status : ");
+		lblStatus.setBounds(48, 199, 152, 34);
+		contentPane.add(lblStatus);
+		
+		lblTranslatedMove = new JLabel("AI's Translated move : ");
+		lblTranslatedMove.setBounds(48, 244, 152, 34);
+		contentPane.add(lblTranslatedMove);
+
+		this.getRootPane().setDefaultButton(btnMove);
 
 
-
-
-
+		
 
 
 
@@ -228,6 +240,15 @@ public class MorphFrame extends JFrame {
 			game = new Game();
 			update();
 		}
+		EventQueue.invokeLater(new Runnable() {
+
+			   @Override
+			     public void run() {
+			         moveInput.grabFocus();
+			         moveInput.requestFocus();//or inWindow
+			     }
+			});
+		
 
 	}
 
@@ -285,23 +306,23 @@ public class MorphFrame extends JFrame {
 
 		if(!game.getBoard().currentPlayer().isKingAlive()){
 			if(game.getBoard().currentPlayer().getSide().toString() == "CPU"){
-				JOptionPane.showMessageDialog(null, "Human won", "Game End", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "You won", "Game End", JOptionPane.INFORMATION_MESSAGE);
 			} else if(game.getBoard().currentPlayer().getSide().toString() == "HUMAN"){
-				JOptionPane.showMessageDialog(null, "CPU won", "Game End", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Dumblet won", "Game End", JOptionPane.INFORMATION_MESSAGE);
 			}
 			System.out.println(calculateAverage(executionTimeList));
 			return;
 		}
 		modelListLegalMoves.clear();
 
-		/*if(game.getBoard().currentPlayer() == game.getBoard().humanPlayer()){
+		if(game.getBoard().currentPlayer() == game.getBoard().humanPlayer()){
 			for(final String move : game.getBoard().printLegalMoves(game.getBoard().currentPlayer())){
 				modelListLegalMoves.addElement(move);
 			}
-		} else {*/
+		} else {
 			AIThinkTank thinkTank = new AIThinkTank();
 			thinkTank.execute();
-		//}
+		}
 
 	}
 	
@@ -324,7 +345,8 @@ public class MorphFrame extends JFrame {
 
 		@Override
 		protected Move doInBackground() throws Exception {
-			final MoveStrategy miniMax = new AlphaBetaWithMoveOrdering(6);
+			morphFrame.lblStatus.setText("AI is thinking");
+			final MoveStrategy miniMax = new AlphaBetaWithMoveOrdering(8);
 			final Move bestMove = miniMax.execute(game.getBoard());
 			executionTimeList.add(( miniMax).getExecutionTime());
 			return bestMove;
@@ -336,6 +358,8 @@ public class MorphFrame extends JFrame {
 				
 				final Move bestMove = get();
 				morphFrame.doComputerMove(bestMove);
+				morphFrame.lblStatus.setText("AI is waiting on you");
+				morphFrame.lblTranslatedMove.setText("Translated move is "+bestMove.toStringReversed());
 			}catch(InterruptedException e){
 				e.printStackTrace();
 			}catch(ExecutionException e){
