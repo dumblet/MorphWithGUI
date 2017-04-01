@@ -173,6 +173,12 @@ public class AlphaBeta implements MoveStrategy {
 		
 	}
 
+	@Override
+	public int pliesSearched() {
+		// TODO Auto-generated method stub
+		return depth;
+	}
+
 
 
 }

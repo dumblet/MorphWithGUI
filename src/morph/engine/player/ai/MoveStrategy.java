@@ -8,4 +8,6 @@ public interface MoveStrategy {
 	Move execute(Board board);
 
 	Long getExecutionTime();
+
+	int pliesSearched();
 }

@@ -25,6 +25,7 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 	private int boardsEvaluated;
 	private long startTime;
 	private long timer;
+	private int depth;
 
 
 
@@ -36,6 +37,10 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 	@Override
 	public String toString() {
 		return "AB+MO";
+	}
+	
+	public int pliesSearched(){
+		return depth;
 	}
 
 	private boolean isEndGameScenario(Board board) {
@@ -96,6 +101,7 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 		System.out.println(boardsEvaluated + " boards evaluated");
 		System.out.println(executionTime + " execution time");
 		System.out.println("CHOSEN MOVE IS " + previousBestMove);
+		this.depth = currentDepth-2;
 		return previousBestMove;
 	}
 

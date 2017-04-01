@@ -118,5 +118,11 @@ public class MiniMax implements MoveStrategy{
 		return highestSeenVal;
 		
 	}
+
+	@Override
+	public int pliesSearched() {
+		// TODO Auto-generated method stub
+		return searchDepth;
+	}
 	
 }

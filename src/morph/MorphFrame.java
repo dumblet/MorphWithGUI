@@ -48,6 +48,7 @@ public class MorphFrame extends JFrame {
 	private JTable table;
 	private JLabel lblStatus;
 	private JLabel lblTranslatedMove;
+	private JLabel lblSearchDepth ;
 	private DefaultListModel<String> modelListLegalMoves;
 	private DefaultListModel<String> modelListMoveHistory;
 	private static Game game;
@@ -220,14 +221,18 @@ public class MorphFrame extends JFrame {
 		contentPane.add(lblMoveHistory);
 		
 		lblStatus = new JLabel("AI status : ");
-		lblStatus.setBounds(48, 199, 152, 34);
+		lblStatus.setBounds(10, 199, 152, 34);
 		contentPane.add(lblStatus);
 		
 		lblTranslatedMove = new JLabel("AI's Translated move : ");
-		lblTranslatedMove.setBounds(48, 244, 152, 34);
+		lblTranslatedMove.setBounds(10, 244, 152, 34);
 		contentPane.add(lblTranslatedMove);
 
 		this.getRootPane().setDefaultButton(btnMove);
+		
+		lblSearchDepth = new JLabel("Search Depth");
+		lblSearchDepth.setBounds(10, 298, 240, 34);
+		contentPane.add(lblSearchDepth);
 
 
 		
@@ -349,6 +354,8 @@ public class MorphFrame extends JFrame {
 			final MoveStrategy miniMax = new AlphaBetaWithMoveOrdering(8);
 			final Move bestMove = miniMax.execute(game.getBoard());
 			executionTimeList.add(( miniMax).getExecutionTime());
+			morphFrame.lblStatus.setText("AI is waiting on you");
+			morphFrame.lblSearchDepth.setText("Dumblet searched up to "+ miniMax.pliesSearched() );
 			return bestMove;
 		}
 
@@ -358,7 +365,6 @@ public class MorphFrame extends JFrame {
 				
 				final Move bestMove = get();
 				morphFrame.doComputerMove(bestMove);
-				morphFrame.lblStatus.setText("AI is waiting on you");
 				morphFrame.lblTranslatedMove.setText("Translated move is "+bestMove.toStringReversed());
 			}catch(InterruptedException e){
 				e.printStackTrace();

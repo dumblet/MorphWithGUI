@@ -80,7 +80,7 @@ public abstract class Piece {
 				return false;
 			}
 		},
-		ROOK(25,"R", 5) {
+		ROOK(25,"R", 3) {
 			@Override
 			public boolean isKing() {
 				return false;
