@@ -31,10 +31,7 @@ public class Knight extends Piece {
 			if(BoardUtils.isValidTileCoordinate(candidateDestinationCoord) && BoardUtils.noMoveError(this.piecePosition, (currentCandidateOffset * this.getPieceSide().getDirection()))){		
 
 				final Tile candidateDestinationTile = board.getTile(candidateDestinationCoord);
-
-				if(!candidateDestinationTile.isTileOccupied() && currentCandidateOffset < 0){
-					legalMoves.add(new Move.PeacefulMove(board, this, candidateDestinationCoord));
-				} else if(candidateDestinationTile.isTileOccupied()){
+				if(candidateDestinationTile.isTileOccupied()){
 
 					final Piece pieceAtDestination = candidateDestinationTile.getPiece();
 					final Side pieceSide = pieceAtDestination.getPieceSide();
@@ -43,8 +40,8 @@ public class Knight extends Piece {
 						legalMoves.add(new Move.EatMove(board, this, candidateDestinationCoord, pieceAtDestination));
 						//capture
 					}
-				}else if(!candidateDestinationTile.isTileOccupied() && currentCandidateOffset > 0){
-					break;
+				}else if(!candidateDestinationTile.isTileOccupied() && currentCandidateOffset < 0){
+					legalMoves.add(new Move.PeacefulMove(board, this, candidateDestinationCoord));
 				} 
 			}
 		}
