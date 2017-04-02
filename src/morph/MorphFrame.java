@@ -11,6 +11,8 @@ import javax.swing.border.EmptyBorder;
 import morph.engine.board.Move;
 import morph.engine.player.MoveTransition;
 import morph.engine.player.ai.AlphaBeta;
+import morph.engine.player.ai.AlphaBetaNoMobilityCheck;
+import morph.engine.player.ai.AlphaBetaRealMoveOrdering;
 import morph.engine.player.ai.AlphaBetaWithMoveOrdering;
 import morph.engine.player.ai.MiniMax;
 import morph.engine.player.ai.MoveStrategy;
@@ -351,7 +353,13 @@ public class MorphFrame extends JFrame {
 		@Override
 		protected Move doInBackground() throws Exception {
 			morphFrame.lblStatus.setText("AI is thinking");
-			final MoveStrategy miniMax = new AlphaBetaWithMoveOrdering(8);
+			final MoveStrategy miniMax;
+			if(game.getBoard().currentPlayer().getSide().toString() == "CPU"){
+
+				miniMax = new AlphaBetaWithMoveOrdering(8);
+			} else {
+				miniMax = new AlphaBetaNoMobilityCheck(8);
+			}
 			final Move bestMove = miniMax.execute(game.getBoard());
 			executionTimeList.add(( miniMax).getExecutionTime());
 			morphFrame.lblStatus.setText("AI is waiting on you");

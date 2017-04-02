@@ -62,25 +62,25 @@ public abstract class Piece {
 	
 	public enum PieceType {
 		
-		PAWN(5,"P", 1) {
+		PAWN(1,"P", 1) {
 			@Override
 			public boolean isKing() {
 				return false;
 			}
 		},
-		KNIGHT(25,"N" , 3) {
+		KNIGHT(3,"N" , 3) {
 			@Override
 			public boolean isKing() {
 				return false;
 			}
 		},
-		BISHOP(25,"B" , 3) {
+		BISHOP(3,"B" , 3) {
 			@Override
 			public boolean isKing() {
 				return false;
 			}
 		},
-		ROOK(25,"R", 3) {
+		ROOK(3,"R", 3) {
 			@Override
 			public boolean isKing() {
 				return false;

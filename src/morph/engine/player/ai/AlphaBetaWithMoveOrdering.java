@@ -55,7 +55,7 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 		final Player currentPlayer = board.currentPlayer();
 		final Side side = currentPlayer.getSide();
 		List<Move> moveList = new ArrayList<Move>(board.currentPlayer().getLegalMoves());
-		moveList.sort(Comparator.comparing(Move::isAttack));
+		//moveList.sort(Comparator.comparing(Move::isAttack));
 		
 		Move previousBestMove = Move.NULL_MOVE;
 		int currentDepth = 1;
@@ -65,7 +65,7 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 			int highestSeenValue = Integer.MIN_VALUE;
 			int lowestSeenValue = Integer.MAX_VALUE;
 			int currentValue;
-			System.out.println(board.currentPlayer() + " THINKING with depth = " + currentDepth);
+			//System.out.println(board.currentPlayer() + " THINKING with depth = " + currentDepth);
 			for (final Move move : moveList){/*this.moveSorter.sort(board.currentPlayer().getLegalMoves())*/ 
 				final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
 				if (moveTransition.getMoveStatus().isDone()) {
@@ -76,7 +76,7 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 								highestSeenValue = currentValue;
 								bestMove = move;
 
-								System.out.println(bestMove);
+								//System.out.println(bestMove);
 								//setChanged();
 								//notifyObservers(bestMove);
 							}
@@ -84,7 +84,7 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 								lowestSeenValue = currentValue;
 								bestMove = move;
 
-								System.out.println(bestMove);
+								//System.out.println(bestMove);
 								//setChanged();
 								//notifyObservers(bestMove);
 							}
@@ -115,7 +115,7 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 		}
 		if(isEndGameScenario(board)){
 			this.boardsEvaluated++;
-			return this.evaluator.evaluate(board, depth) + depth;
+			return this.evaluator.evaluate(board, depth) - depth;
 		}
 
 		timer = System.currentTimeMillis() - startTime;
@@ -124,7 +124,7 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 		}
 		List<Move> moveList = new ArrayList<Move>(board.currentPlayer().getLegalMoves());
 		if(depth>1){
-			moveList.sort(Comparator.comparing(Move::isAttack));
+			//moveList.sort(Comparator.comparing(Move::isAttack));
 		}
 		int currentHighest = highest;
 		for (final Move move : moveList) {
@@ -150,7 +150,7 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 		}
 		if(isEndGameScenario(board)){
 			this.boardsEvaluated++;
-			return this.evaluator.evaluate(board, depth) - depth;
+			return this.evaluator.evaluate(board, depth) + depth;
 		}
 
 		timer = System.currentTimeMillis() - startTime;
@@ -159,7 +159,7 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 		}
 		List<Move> moveList = new ArrayList<Move>(board.currentPlayer().getLegalMoves());
 		if(depth>1){
-			moveList.sort(Comparator.comparing(Move::isAttack));
+			//moveList.sort(Comparator.comparing(Move::isAttack));
 		}
 		int currentLowest = lowest;
 		for (final Move move : moveList) {

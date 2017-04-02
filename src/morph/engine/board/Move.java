@@ -71,6 +71,10 @@ public abstract class Move {
 		return null;
 	}
 	
+	public int pieceValueDifference(){
+		return 0;
+	}
+	
 	public int getCurrentCoord(){
 		return this.getMovedPiece().getPiecePosition();
 	}
@@ -149,8 +153,14 @@ public abstract class Move {
 		
 		@Override
 		public Piece getAttackedPiece(){
-			return this.getAttackedPiece();
+			return enemyPiece;
 		}
+		
+		@Override
+		public int pieceValueDifference(){
+			return this.getAttackedPiece().getPieceValue() - this.movedPiece.getPieceValue();
+		}
+		
 	}
 	
 	public static final class NullMove extends Move{

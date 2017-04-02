@@ -4,7 +4,7 @@ import morph.engine.board.Board;
 import morph.engine.pieces.Piece;
 import morph.engine.player.Player;
 
-public final class StandardBoardEvaluator implements BoardEval {
+public final class NotStandardBoardEvaluator implements BoardEval {
 
 
 	@Override
@@ -14,7 +14,7 @@ public final class StandardBoardEvaluator implements BoardEval {
 
 	private int scorePlayer(Board board, Player player, int depth) {
 		// TODO Auto-generated method stub
-		return pieceVal(player)*10 + mobility(player) + kingMove(player)*10;
+		return pieceVal(player);
 	}
 
 	private static int mobility(Player player) {
