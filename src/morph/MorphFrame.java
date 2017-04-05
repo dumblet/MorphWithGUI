@@ -301,6 +301,7 @@ public class MorphFrame extends JFrame {
 	}
 
 	public void update(){
+		lblTranslatedMove.setText("Thinking");
 
 		//updates board
 		int k = 0;

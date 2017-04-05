@@ -115,7 +115,7 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 		}
 		if(isEndGameScenario(board)){
 			this.boardsEvaluated++;
-			return this.evaluator.evaluate(board, depth) - depth;
+			return this.evaluator.evaluate(board, depth) - depth * 100;
 		}
 
 		timer = System.currentTimeMillis() - startTime;
@@ -150,7 +150,7 @@ public class AlphaBetaWithMoveOrdering implements MoveStrategy {
 		}
 		if(isEndGameScenario(board)){
 			this.boardsEvaluated++;
-			return this.evaluator.evaluate(board, depth) + depth;
+			return this.evaluator.evaluate(board, depth) + depth * 100;
 		}
 
 		timer = System.currentTimeMillis() - startTime;
